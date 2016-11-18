@@ -7,7 +7,7 @@
  */
 function createGrid(a, element) {
     if (a === null) { // if a isn't specified, default to 30
-        a = 30;
+        a = 64;
     }
 
     var tableElem, rowElem, colElem;
@@ -29,8 +29,8 @@ function createGrid(a, element) {
 
     //Append the finished table
     if (element === null) { //If no element is specified, try to append to #container
-        if ($('#container') !== null) {
-            $('#container').append(tableElem);
+        if ($('#canvas') !== null) {
+            $('#canvas').append(tableElem);
         } else { //Throw an error
             console.log("Cannot append table, bad/unspecified element (use jQuery syntax)");
         }
@@ -41,7 +41,7 @@ function createGrid(a, element) {
     }
 
     // Compute the dimensions of pixels
-    var pixelW, pixelH = 600 / a;
+    var pixelW = pixelH = 600 / a;
 
     //Set the dimensions of pixels
     $('td').width(pixelW).height(pixelH);
@@ -52,7 +52,6 @@ function createGrid(a, element) {
     });
 }
 
-
 /**
  * Generate a new grid
  */
@@ -62,7 +61,6 @@ function updateGrid() {
     createGrid(n, '#container');
 }
 
-
 /**
  * Clear the painted pixels
  */
@@ -70,7 +68,6 @@ function clearGrid() {
     $('td').removeClass('painted');
 }
 
-
 $(document).ready(function () {
-    createGrid('#container');
+    createGrid(64, '#container');
 });
