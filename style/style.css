@@ -1,0 +1,13 @@
+#container {
+    margin: 0 auto;
+    width: 800px;
+    height: 600px;
+}
+
+table {
+    border-spacing: 0px;
+}
+
+.painted {
+    background-color: black;
+}
