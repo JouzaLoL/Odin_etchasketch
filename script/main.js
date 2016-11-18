@@ -1,54 +1,76 @@
-function createTable(a, element) {
-
-    if (a === null) {
+/**
+ * Create an a*a grid and append it to the element
+ * 
+ * @param {number} a the size of the grid
+ * @param {string} element the jQuery expression used to search for the element
+ * @returns
+ */
+function createGrid(a, element) {
+    if (a === null) { // if a isn't specified, default to 30
         a = 30;
     }
 
     var tableElem, rowElem, colElem;
 
-    //Compute the dimensions of pixels
-    var pixelW = pixelH = 600 / a;
+    tableElem = document.createElement('table');
 
-    if (a === "") { //Don't create a table with 0 rows
-        return;
-    } else {
-        tableElem = document.createElement('table');
+    // Rows cycle
+    for (var r = 0; r < a; r++) {
+        rowElem = document.createElement('tr'); // Create the row
 
-        for (var i = 0; i < a; i++) {
-            rowElem = document.createElement('tr'); //Create the row
-
-            for (var j = 0; j < a; j++) {
-                colElem = document.createElement('td');
-                rowElem.appendChild(colElem);
-            }
-
-            tableElem.appendChild(rowElem);
-        }
-        if (element === null) {
-            $('#container').append(tableElem);
-        } else {
-            $("html").find(element).append(tableElem);
+        // Columns cycle
+        for (var c = 0; c < a; c++) {
+            colElem = document.createElement('td'); // Create the column
+            rowElem.appendChild(colElem); // Append the column to the row
         }
 
+        tableElem.appendChild(rowElem); // Append the row to the table
     }
 
-    $('td').width(pixelW).height(pixelH); //Set the pixel dimensions
+    //Append the finished table
+    if (element === null) { //If no element is specified, try to append to #container
+        if ($('#container') !== null) {
+            $('#container').append(tableElem);
+        } else { //Throw an error
+            console.log("Cannot append table, bad/unspecified element (use jQuery syntax)");
+        }
+    } else { //If element is specified, search for it via jQuery
+        if ($('html').find(element) !== null) {
+            $('html').find(element).append(tableElem);
+        }
+    }
+
+    // Compute the dimensions of pixels
+    var pixelW, pixelH = 600 / a;
+
+    //Set the dimensions of pixels
+    $('td').width(pixelW).height(pixelH);
+
+    //Make the user be able to paint the pixels
     $('td').hover(function () {
-        $(this).addClass("painted");
+        $(this).addClass('painted');
     });
 }
 
-function updateGrid() {
-    var n = prompt("Please enter the size of the grid:", 64);
-    $('table').remove();
-    createTable(n, "#container");
 
+/**
+ * Generate a new grid
+ */
+function updateGrid() {
+    var n = prompt('Please enter the size of the grid:', 64);
+    $('table').remove();
+    createGrid(n, '#container');
 }
 
+
+/**
+ * Clear the painted pixels
+ */
 function clearGrid() {
     $('td').removeClass('painted');
 }
 
+
 $(document).ready(function () {
-    createTable(20, "#container");
+    createGrid('#container');
 });
